@@ -6,6 +6,8 @@
 // NavLink component allows tracking which page is currently active.
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { House, UserRound, FolderKanban, GraduationCap, BriefcaseBusiness,
+         Mail, ShieldCheck, LogIn, LogOut, } from "lucide-react";
 
 function Navbar() {
   // Access authentication information from AuthContext.
@@ -28,16 +30,16 @@ function Navbar() {
       </div>
 
       <div>
-        <NavLink to="/" end>Home</NavLink>
-        <NavLink to="/about">About</NavLink>
-        <NavLink to="/projects">Projects</NavLink>
-        <NavLink to="/education">Education</NavLink>
-        <NavLink to="/services">Services</NavLink>
-        <NavLink to="/contact">Contact</NavLink>
+        <NavLink to="/" end><House size={17} strokeWidth={1.8} />Home</NavLink>
+        <NavLink to="/about"><UserRound size={17} strokeWidth={1.8} />About</NavLink>
+        <NavLink to="/projects"><FolderKanban size={17} strokeWidth={1.8} />Projects</NavLink>
+        <NavLink to="/education"><GraduationCap size={17} strokeWidth={1.8} />Education</NavLink>
+        <NavLink to="/services"><BriefcaseBusiness size={17} strokeWidth={1.8} />Services</NavLink>
+        <NavLink to="/contact"><Mail size={17} strokeWidth={1.8} />Contact</NavLink>
 
         {/* Display administrator navigation only for admins. */}
         {isAdmin && (
-          <NavLink to="/admin">Admin</NavLink>
+          <NavLink to="/admin"><ShieldCheck size={17} strokeWidth={1.8} />Admin</NavLink>
         )}
 
         {/* Display different controls depending on login state. */}
@@ -49,13 +51,19 @@ function Navbar() {
               onClick={handleSignOut}
             >
               <span className="nav-username">{user.name}</span>
-              <span>Sign Out</span>
+              <span className="nav-signout-label">
+                Sign Out
+                <LogOut size={17} strokeWidth={1.8} />
+              </span>
             </button>
           </>
         ) : (
           <>
             {/* Combined authentication navigation link. */}
-            <NavLink to="/signin">Access / Register</NavLink>
+            <NavLink to="/signin" className="nav-auth-button">
+              <LogIn size={17} strokeWidth={1.8} />
+              <span>Access / Register</span>
+            </NavLink>
           </>
         )}
       </div>
