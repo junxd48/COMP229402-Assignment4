@@ -48,6 +48,14 @@ nav > div:last-child {
   row-gap: 12px;
 }
 
+/* Align Lucide icons with navigation text */
+nav > div:last-child a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
 nav > div:first-child a {
   display: inline-flex;
   align-items: center;
@@ -57,6 +65,80 @@ nav > div:first-child img {
   width: 80px;
   height: auto;
   display: block;
+}
+
+/* Style Access / Register as a light-blue button. */
+nav .nav-auth-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  background-color: #B8DDF2;
+  color: #26354A;
+
+  padding: 10px 16px;
+  border: 1px solid #B8DDF2;
+  border-radius: 6px;
+
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+
+  transition: background-color 0.2s ease;
+}
+
+/* Sign Out button containing the username */
+.nav-signout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+
+  background-color: #B8DDF2;
+  border: 1px solid #B8DDF2;
+  color: #26354A;
+
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+/* Position Sign Out text and icon horizontally. */
+.nav-signout-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+/* Username displayed above Sign Out */
+.nav-username {
+  color: #26354A;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Sign Out hover effect */
+.nav-signout:hover {
+  background-color: #8FC9E8;
+  border-color: #8FC9E8;
+  color: #26354A;
+}
+
+/* Highlight Access / Register on hover and when active. */
+  nav .nav-auth-button:hover,
+  nav .nav-auth-button.active {
+  background-color: #8FC9E8;
+  color: #26354A;
+  border-color: #8FC9E8;
 }
 
 /* Main content */
@@ -510,39 +592,6 @@ footer p {
     gap: 0;
     margin-bottom: 0;
   }
-}
-
-/* Sign Out button containing the username */
-.nav-signout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-
-  background: transparent;
-  border: 1px solid #E9C46A;
-  color: #FFFFFF;
-
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font: inherit;
-  font-size: 13px;
-  white-space: nowrap;
-}
-
-/* Username displayed above Sign Out */
-.nav-username {
-  color: #E9C46A;
-  font-size: 11px;
-  font-weight: 600;
-}
-
-/* Sign Out hover effect */
-.nav-signout:hover {
-  background: #2A9D8F;
-  border-color: #2A9D8F;
 }
 
 /* ==========================================
@@ -1104,3 +1153,4 @@ footer p {
   font-size: 14px;
   margin: 8px 0;
 }
+

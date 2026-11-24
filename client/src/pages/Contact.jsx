@@ -6,12 +6,9 @@
 
 // useState hook for storing and updating form input values
 import { useState } from "react";
-// useNavigate allows programmatic navigation between routes
-import { useNavigate } from "react-router-dom";
 
 
 function Contact() {
-  const navigate = useNavigate();
 
   // Stores all contact form fields in a single state object
   const [formData, setFormData] = useState({

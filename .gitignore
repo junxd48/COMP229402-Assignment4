@@ -13,3 +13,8 @@ dist/
 
 # Log files
 *.log
+
+# Cypress generated test artifacts
+client/cypress/videos/
+client/cypress/screenshots/
+client/cypress/downloads/
