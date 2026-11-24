@@ -5,6 +5,10 @@
       "destination": "https://comp229402-assignment4-api.onrender.com/api/:path*"
     },
     {
+      "source": "/images/projects/:path*",
+      "destination": "https://comp229402-assignment4-api.onrender.com/images/projects/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
