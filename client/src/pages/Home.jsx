@@ -12,7 +12,7 @@ function Home() {
     // Main section. The classes are used to apply the styles from CSS.
     <section className="hero">
       <div className="hero-content">
-        <p className="intro">WELCOME TO MY PORTFOLIO</p>
+        <p className="intro">WELCOME TO MY SOFTWARE DEVELOPMENT PORTFOLIO</p>
         <h1>
           Building Technology Solutions
           <br />
