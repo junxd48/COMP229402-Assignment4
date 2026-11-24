@@ -1,0 +1,54 @@
+
+name: Portfolio CI
+
+# Run on feature-branch updates and pull requests to main.
+on:
+  push:
+    branches:
+      - feature/assignment4
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    name: Unit Tests and Production Build
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Retrieve the repository source code.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Configure Node.js.
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            client/package-lock.json
+
+      # 3. Install backend dependencies.
+      - name: Install backend dependencies
+        run: npm ci
+
+      # 4. Install frontend dependencies.
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: client
+
+      # 5. Execute the five Vitest tests.
+      - name: Run React unit tests
+        run: npm run test:run
+        working-directory: client
+
+      # 6. Verify the React production build.
+      - name: Build React application
+        run: npm run build
+        working-directory: client
