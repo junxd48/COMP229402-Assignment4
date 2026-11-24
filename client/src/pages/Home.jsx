@@ -29,13 +29,12 @@ function Home() {
       </div>
       <div className="hero-image-container">
         <img
-          src="/images/innovation.png"
-
-          // alternative text if the image cannot load.
+          //src="/images/innovation.png"  //replaced for optimization
+          src="/images/innovation.webp"
           alt="Technology and innovation illustration"
-
-          // CSS class used to control the image's size and appearance.
           className="hero-image"
+          width={285}
+          height={275}
         />
       </div>
     </section>

@@ -25,7 +25,10 @@ function Navbar() {
     <nav>
       <div>
         <NavLink to="/">
-            <img src="/images/logo.png" alt="JD Technologies logo" />
+            <img src="/images/logo.webp"
+             alt="JD Technologies logo"
+             width="160"
+             height="160"/>
         </NavLink>
       </div>
 
