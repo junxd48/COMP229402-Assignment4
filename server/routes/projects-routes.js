@@ -1,37 +1,63 @@
-import express from 'express';
-import { authenticateToken } from '../middleware/auth-middleware.js';
-import { authorizeAdmin } from '../middleware/authorize-admin.js';
+
+import express from "express";
+
+import { authenticateToken } from "../middleware/auth-middleware.js";
+import { authorizeAdmin } from "../middleware/authorize-admin.js";
 
 import {
-    createProject,
-    deleteProject,
-    getAllProjects,
-    getProjectById,
-    updateProject
-} from '../controllers/projects-controllers.js';
+  createProject,
+  deleteProject,
+  getAllProjects,
+  getProjectById,
+  updateProject,
+} from "../controllers/projects-controllers.js";
 
 import {
   handleUpload,
-  saveProjectImage
+  saveProjectImage,
 } from "../middleware/upload-middleware.js";
 
 // Create an Express router for project-related endpoints.
 const router = express.Router();
 
 // READ: Public access.
-router.get('/', getAllProjects);
-router.get('/:id', getProjectById);
+router.get("/", getAllProjects);
 
-// CREATE: Authentication required.
-router.post('/', authenticateToken, authorizeAdmin, createProject);
+// UPLOAD: Administrators can upload project images.
+// saveProjectImage will be updated to store images in MongoDB.
+router.post(
+  "/upload",
+  authenticateToken,
+  authorizeAdmin,
+  handleUpload,
+  saveProjectImage
+);
 
-router.post("/upload", authenticateToken, authorizeAdmin, handleUpload, saveProjectImage);
+// CREATE: Administrators can create projects.
+router.post(
+  "/",
+  authenticateToken,
+  authorizeAdmin,
+  createProject
+);
 
-// UPDATE: Authentication required.
-router.put('/:id', authenticateToken, authorizeAdmin, updateProject);
+// READ BY ID: Public access.
+router.get("/:id", getProjectById);
 
-// DELETE: Authentication required.
-router.delete('/:id', authenticateToken, authorizeAdmin, deleteProject);
+// UPDATE: Administrators can modify projects.
+router.put(
+  "/:id",
+  authenticateToken,
+  authorizeAdmin,
+  updateProject
+);
 
-// Export the router for registration in server.js.
+// DELETE: Administrators can delete projects.
+router.delete(
+  "/:id",
+  authenticateToken,
+  authorizeAdmin,
+  deleteProject
+);
+
 export default router;

@@ -1,34 +1,20 @@
 
 import multer from "multer";
-import path from "node:path";
 import { randomUUID } from "node:crypto";
-import { fileURLToPath } from "node:url";
-import fs from "node:fs";
+import Image from "../models/image-model.js";
 
-// Determine the project root directory.
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const uploadDirectory = path.resolve(
-  __dirname,
-  "../../client/public/images/projects"
-);
-
-// Ensure the image directory exists.
-fs.mkdirSync(uploadDirectory, { recursive: true });
-
-// Limit uploaded images to 5 MB.
+// Maximum permitted image size: 5 MB.
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
-// Supported image formats.
+// Supported image MIME types.
 const allowedTypes = [
   "image/jpeg",
   "image/png",
   "image/webp",
 ];
 
-// Use memory storage until the file has been validated.
-// This prevents unvalidated files from being written to disk.
+// Store uploaded files temporarily in memory.
+// MongoDB will provide permanent storage.
 const storage = multer.memoryStorage();
 
 const upload = multer({
@@ -50,9 +36,13 @@ const upload = multer({
   },
 });
 
-// Validate the actual image signature.
-// Do not rely exclusively on the browser-supplied MIME type.
+// Validate an image using its actual file signature.
 function detectImageType(buffer) {
+  if (!Buffer.isBuffer(buffer)) {
+    return null;
+  }
+
+  // JPEG signature.
   if (
     buffer.length >= 3 &&
     buffer[0] === 0xff &&
@@ -62,6 +52,7 @@ function detectImageType(buffer) {
     return "jpg";
   }
 
+  // PNG signature.
   if (
     buffer.length >= 8 &&
     buffer.subarray(0, 8).equals(
@@ -71,6 +62,7 @@ function detectImageType(buffer) {
     return "png";
   }
 
+  // WebP signature.
   if (
     buffer.length >= 12 &&
     buffer.toString("ascii", 0, 4) === "RIFF" &&
@@ -82,7 +74,8 @@ function detectImageType(buffer) {
   return null;
 }
 
-// Save a validated image using a server-generated filename.
+// POST /api/projects/upload
+// Save a validated image to MongoDB Atlas.
 async function saveProjectImage(req, res) {
   try {
     if (!req.file) {
@@ -91,6 +84,7 @@ async function saveProjectImage(req, res) {
       });
     }
 
+    // Check image contents, not just file extension.
     const extension = detectImageType(req.file.buffer);
 
     if (!extension) {
@@ -111,19 +105,21 @@ async function saveProjectImage(req, res) {
       });
     }
 
+    // Generate a unique server-side filename.
     const filename = `project-${randomUUID()}.${extension}`;
 
-    const destination = path.join(uploadDirectory, filename);
+    // Save the actual image bytes in MongoDB.
+    const savedImage = await Image.create({
+      filename,
+      contentType: expectedMimeType,
+      size: req.file.size,
+      data: req.file.buffer,
+    });
 
-    await fs.promises.writeFile(
-      destination,
-      req.file.buffer,
-      { flag: "wx" }
-    );
-
+    // Return a path that can be used by the React frontend.
     return res.status(201).json({
       message: "Image uploaded successfully.",
-      image: `/images/projects/${filename}`,
+      image: `/api/images/${savedImage._id}`,
     });
 
   } catch (error) {
@@ -135,12 +131,14 @@ async function saveProjectImage(req, res) {
   }
 }
 
-// Convert Multer errors into appropriate HTTP responses.
+// Convert Multer errors to appropriate HTTP responses.
 function handleUpload(req, res, next) {
   upload.single("image")(req, res, function (error) {
     if (error) {
       if (error instanceof multer.MulterError) {
-        return res.status(400).json({
+        return res.status(
+          error.code === "LIMIT_FILE_SIZE" ? 413 : 400
+        ).json({
           message: error.message,
         });
       }

@@ -453,18 +453,6 @@ function AdminProjectForm() {
             </div>
           )}
 
-          {/* Allow administrators to enter an image path manually. */}
-          <label htmlFor="image">Image Path</label>
-          <input
-            id="image"
-            name="image"
-            type="text"
-            placeholder="/images/projects/project.jpg"
-            value={formData.image}
-            onChange={handleChange}
-            disabled={saving || Boolean(selectedImage)}
-          />
-
           <label htmlFor="role">Role</label>
           <input
             id="role"
