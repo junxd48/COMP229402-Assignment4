@@ -8,6 +8,7 @@ import projectsRoutes from './server/routes/projects-routes.js';
 import userRoutes from './server/routes/user-routes.js';
 import contactsRoutes from './server/routes/contacts-routes.js';
 import qualificationsRoutes from './server/routes/qualifications-routes.js';
+import imageRoutes from "./server/routes/images-routes.js";
 
 
 // Load environment variables from the server directory.
@@ -35,6 +36,7 @@ app.use('/api/projects', projectsRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/contacts', contactsRoutes);
 app.use('/api/qualifications', qualificationsRoutes);
+app.use("/api/images", imageRoutes);
 
 // Connect to MongoDB before starting the Express server.
 async function startServer() {
